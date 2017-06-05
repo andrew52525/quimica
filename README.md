@@ -10,6 +10,6 @@ List of Working Features:<br>
 Pretty much nothing.<br>
 <br>
 List of Unresolved Bugs:<br>
-We have no progressed far enough for bugs to exist.
+We have not progressed far enough for bugs to exist.
 </html>
 
