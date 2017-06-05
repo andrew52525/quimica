@@ -1,8 +1,6 @@
 public class Atom{
     private int protons, neutrons, electrons;
-    private int charge;
-    
-    private double x, y, z;
+    private Location loc; 
     private double mass, radius, electronegativity;
 
     // default will be Hydrogen
@@ -12,17 +10,34 @@ public class Atom{
 	neutrons = 1;
 	electrons = 1;
 
-	charge = 0;
-
-	x = 0;
-	y = 0;
-	z = 0;
+	loc = new Location(0,0,0);
     }
 
+    public Atom(int proton, int neutron, int electron){
+	protons = proton;
+	neutrons = neutron;
+	electrons = electron;
+
+	loc = new Location(0,0,0);
+    }
+    
+    public Location getLocation(){
+	return loc;
+    }
+
+    public int getCharge(){
+	return protons - electrons;
+    }
+    
     public void addElectron(){
 	electrons++;
     }
     public void removeElectron(){
 	electrons--;
+    }
+
+    public int getValence(){
+	// stuff
+	return -1;
     }
 }

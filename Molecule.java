@@ -1,6 +1,6 @@
 public class Molecule{
     private ArrayList<Atom> atoms;
-    private double x, y, z;
+    private Location loc;
     private double vx, vy, vz;
     private double acceleration;
 
