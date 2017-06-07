@@ -6,38 +6,41 @@ public class Atom{
     // default will be Hydrogen
     // I don't really know about common isotopes so you should adjust this
     public Atom(){
-	protons = 1;
-	neutrons = 1;
-	electrons = 1;
-
-	loc = new Location(0,0,0);
+      protons = 1;
+      neutrons = 1;
+      electrons = 1;
+    radius = 5;
+      loc = new Location(random(500),random(500),random(500));
     }
-
     public Atom(int proton, int neutron, int electron){
-	protons = proton;
-	neutrons = neutron;
-	electrons = electron;
-
-	loc = new Location(0,0,0);
+      protons = proton;
+      neutrons = neutron;
+      electrons = electron;
+    
+      loc = new Location(0,0,0);
     }
     
+    public void move(){
+      loc.add(); //should be a variable velocity
+      fill(200);
+      sphere((float)radius);
+    }
+        
     public Location getLocation(){
-	return loc;
-    }
-
-    public int getCharge(){
-	return protons - electrons;
+      return loc;
     }
     
+    public int getCharge(){
+      return protons - electrons;
+    }
     public void addElectron(){
-	electrons++;
+      electrons++;
     }
     public void removeElectron(){
-	electrons--;
+      electrons--;
     }
-
     public int getValence(){
-	// stuff
-	return -1;
+      // stuff
+      return -1;
     }
 }
