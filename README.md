@@ -7,9 +7,9 @@ Andrew Chen<br>
 Ida Wang<br>
 <br>
 List of Working Features:<br>
-Pretty much nothing.<br>
+Balls bounce around on walls in 3D!<br>
 <br>
 List of Unresolved Bugs:<br>
-We have not progressed far enough for bugs to exist.
+It explodes when there's too many balls, because of too many calls to pushMatrix().
 </html>
 
