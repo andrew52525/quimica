@@ -9,7 +9,7 @@ public class Atom{
       protons = 1;
       neutrons = 1;
       electrons = 1;
-
+    radius = 5;
       loc = new Location(random(500),random(500),random(500));
     }
     public Atom(int proton, int neutron, int electron){
@@ -22,7 +22,8 @@ public class Atom{
     
     public void move(){
       loc.add(); //should be a variable velocity
-      ellipse(20, 20, 20, 20);
+      fill(200);
+      sphere((float)radius);
     }
         
     public Location getLocation(){
