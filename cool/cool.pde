@@ -3,8 +3,7 @@ i'm just putting some planning shit here cuz i'm too lazy to leave and it's easy
 
 things to do:
 fix wall setup
-make balls colors work (too many calls to push matrix)
-make collisions work
+too many calls to pushMatrix
 chemistry
 */
 
@@ -57,8 +56,8 @@ double[] calcForces(Atom a){
       double fo = 0; //force applied on atom a by an atom o
       double d = distance(a, o);
       //if(d < 10){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
-      fo -= 7*(a.charge*o.charge/(d*d)); //coulomb force
-      fo -= 8000/(d*d*d); //repulsive force of being too close
+      fo -= 10*(a.charge*o.charge/(d*d)); //coulomb force
+      fo -= (a.mass*o.mass*10000)/(d*d*d) + (a.mass*o.mass*100000)/(d*d*d*d); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
       //if(a.bonds.contains(o)){fo += 10;} //bond force
       
       
@@ -84,7 +83,7 @@ void bounce(Atom a){
   if (a.loc.y + a.radius > h && a.loc.vy > 0){a.loc.vy = -a.loc.vy;}  
   if (a.loc.z - a.radius < 0 && a.loc.vz < 0){a.loc.vz = -a.loc.vz;}  
   if (a.loc.z + a.radius > h && a.loc.vz > 0){a.loc.vz = -a.loc.vz;} 
-/*for(Atom o : atoms){    //bouncin against other ballz
+  for(Atom o : atoms){    //bouncin against other ballz
     if(o.order>a.order){
       double d = distance(a, o);
       if (d < a.radius + o.radius){
@@ -113,7 +112,7 @@ void bounce(Atom a){
         System.out.println(o.loc.vx + " " + o.loc.vy + " " + o.loc.vz);
       }
     }
-  }*/
+  }
 }
 double[] arr(double a, double b, double c){
   double[] ret = {(double)a, (double)b, (double)c}; return ret;}

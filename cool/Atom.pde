@@ -4,7 +4,7 @@ public class Atom{
   public Location loc; 
   public double mass, radius, electronegativity;
   public int order; //just used to keep track of which atom is which, 1st atom is 1, etc.
-  ArrayList<Atom> bonds;
+ // ArrayList<Atom> bonds;
 
   // default will be Hydrogen
   // I don't really know about common isotopes so you should adjust this
@@ -13,10 +13,10 @@ public class Atom{
     protons = 1;
     neutrons = 1;
     electrons = 1;
+    radius = 2+(Math.random()*6);
+    mass = (radius*radius*radius/125);     
     updateCharge();
-    mass = 1;//+(Math.random()*2);
-    radius = 5;
-    bonds = new ArrayList<Atom>();
+//bonds = new ArrayList<Atom>();
     loc = new Location(random(500),random(500),random(500));
   }
   public Atom(int orderi, int proton, int neutron, int electron){
@@ -35,7 +35,7 @@ public class Atom{
     loc.update(); //should be a variable velocity
     pushMatrix();
     translate((float)loc.x, (float)loc.y, (float)loc.z);
-    fill((int)(charge+10)*12.7, 40, 255-(int)(charge+10)*12.7);
+    fill((int)(((charge*mass)+10)*12.7), 40, 255-(int)((charge*mass+10)*12.7));
     noStroke();
     sphere((float)radius);
     popMatrix();
@@ -48,7 +48,7 @@ public class Atom{
     
   public void updateCharge(){
     charge = protons - electrons;
-    charge = 20*(Math.random()-.5);
+    charge = 20*(Math.random()-.5)*mass;
   }
   public void addElectron(){
     electrons++;
@@ -61,7 +61,7 @@ public class Atom{
     return -1;
   }
   
-  public void bond(Atom o){
+  /*public void bond(Atom o){
     bonds.add(o);
-  }
+  }*/
 }
