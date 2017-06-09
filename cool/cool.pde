@@ -115,7 +115,8 @@ void bounce(Atom a){
   }
 }
 double[] arr(double a, double b, double c){
-  double[] ret = {(double)a, (double)b, (double)c}; return ret;}
+  double[] ret = {(double)a, (double)b, (double)c}; return ret;
+}
 void drawWalls(){
   new Wall('x', 0); new Wall('x', h);
   new Wall('y', 0); new Wall('y', h);
