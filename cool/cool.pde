@@ -34,7 +34,7 @@ void draw(){
 }
 
 void mousePressed(){
-  pushMatrix();
+  //pushMatrix();
   Atom a = new Atom(numAtoms);
   atoms.add(a);
   numAtoms++;
