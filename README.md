@@ -7,9 +7,11 @@ Andrew Chen<br>
 Ida Wang<br>
 <br>
 List of Working Features:<br>
-Balls bounce around on walls in 3D!<br>
+6/6 - Balls can bounce off the walls in 3D!<br>
+6/8 - Balls repel each other.<br>
 <br>
 List of Unresolved Bugs:<br>
-It explodes when there's too many balls, because of too many calls to pushMatrix().
+6/8 - It explodes when there's too many balls (~30), because of too many calls to pushMatrix().<br>
+6/9 - Starts freezing after adding ~100 balls.
 </html>
 
