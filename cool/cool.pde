@@ -36,20 +36,17 @@ void draw(){
 
 void mousePressed(){
   pushMatrix();
-  Atom a = new Atom();
+  Atom a = new Atom(numAtoms);
   atoms.add(a);
   numAtoms++;
   System.out.println(numAtoms);
 }
 
 void drawAtoms(){
-  for(Atom a : atoms){
+  for(Atom a: atoms){
     a.applyForces(calcForces(a));
-    pushMatrix();
-    checkBounce(a);
-    a.move();
-    popMatrix();
-  }
+    bounce(a);}
+  for(Atom a : atoms){a.move();} //moving has to come after updating velocity
 }
 
 double[] calcForces(Atom a){
@@ -59,10 +56,10 @@ double[] calcForces(Atom a){
     if (o!=a){
       double fo = 0; //force applied on atom a by an atom o
       double d = distance(a, o);
-      if(d < 10){a.bond(o);}//make bonds
-      fo -= 10*(a.charge*o.charge/(d*d)); //coulomb force
-      fo -= 5000/(d*d*d); //repulsive force of being too close
-      if(a.bonds.contains(o)){fo += 10;} //bond force
+      //if(d < 10){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
+      fo -= 7*(a.charge*o.charge/(d*d)); //coulomb force
+      fo -= 8000/(d*d*d); //repulsive force of being too close
+      //if(a.bonds.contains(o)){fo += 10;} //bond force
       
       
       double xcomp = (o.loc.x-a.loc.x)/(d); //how much the vector going between a and o is pointing in the x direction
@@ -71,6 +68,7 @@ double[] calcForces(Atom a){
       ftx += xcomp*fo;
       fty += ycomp*fo;
       ftz += zcomp*fo;      
+      
     }
   }
 
@@ -79,13 +77,43 @@ double[] calcForces(Atom a){
 }
 double distance(Atom a, Atom b){return Math.sqrt(((a.loc.x-b.loc.x)*(a.loc.x-b.loc.x)) + ((a.loc.y-b.loc.y)*(a.loc.y-b.loc.y)) + ((a.loc.z-b.loc.z)*(a.loc.z-b.loc.z)));}
 
-void checkBounce(Atom a){
-  if (a.loc.x - a.radius < 0){a.loc.vx = -a.loc.vx;}
-  if (a.loc.x + a.radius > h){a.loc.vx = -a.loc.vx;}  
-  if (a.loc.y - a.radius < 0){a.loc.vy = -a.loc.vy;}  
-  if (a.loc.y + a.radius > h){a.loc.vy = -a.loc.vy;}  
-  if (a.loc.z - a.radius < 0){a.loc.vz = -a.loc.vz;}  
-  if (a.loc.z + a.radius > h){a.loc.vz = -a.loc.vz;}  
+void bounce(Atom a){
+  if (a.loc.x - a.radius < 0 && a.loc.vx < 0){a.loc.vx = -a.loc.vx;}
+  if (a.loc.x + a.radius > h && a.loc.vx > 0){a.loc.vx = -a.loc.vx;}  
+  if (a.loc.y - a.radius < 0 && a.loc.vy < 0){a.loc.vy = -a.loc.vy;}  //bouncin against walls n shit
+  if (a.loc.y + a.radius > h && a.loc.vy > 0){a.loc.vy = -a.loc.vy;}  
+  if (a.loc.z - a.radius < 0 && a.loc.vz < 0){a.loc.vz = -a.loc.vz;}  
+  if (a.loc.z + a.radius > h && a.loc.vz > 0){a.loc.vz = -a.loc.vz;} 
+/*for(Atom o : atoms){    //bouncin against other ballz
+    if(o.order>a.order){
+      double d = distance(a, o);
+      if (d < a.radius + o.radius){
+        System.out.println(a.loc.vx + " " + a.loc.vy + " " + a.loc.vz);
+        System.out.println(o.loc.vx + " " + o.loc.vy + " " + o.loc.vz);
+        double dx = (o.loc.x-a.loc.x);  //displacement of o relative to a (a relative to o is negative!!)
+        double dy = (o.loc.y-a.loc.y); 
+        double dz = (o.loc.z-a.loc.z);                                                 
+        double adot = ((dx*a.loc.vx) + (dy*a.loc.vy) + (dz*a.loc.vz))/d;//initial v along axis of collision
+        double odot = -((dx*o.loc.vx) + (dy*o.loc.vy) + (dz*o.loc.vz))/d;//initial v perp = dot product of displacement and velocity / d
+        double aparx = a.loc.vx - (adot * dx / d); //a parallel in x = initial vx - initial vx perpendicular
+        double apary = a.loc.vy - (adot * dy / d); 
+        double aparz = a.loc.vz - (adot * dz / d);
+        double oparx = o.loc.vx + (odot * dx / d);  //the parallel components of the initial velocities (which r preserved)
+        double opary = o.loc.vy + (odot * dy / d);
+        double oparz = o.loc.vz + (odot * dz / d);
+        double aperMag = (adot*(a.mass-o.mass) + (odot*2*o.mass))/(a.mass+o.mass); // final vx perpendicular
+        double operMag = (odot*(o.mass-a.mass) + (adot*2*a.mass))/(a.mass+o.mass);
+        a.loc.vx = aparx + aperMag*dx/d; //a's vx = a's v parallel + a's v perp
+        a.loc.vy = apary + aperMag*dy/d;
+        a.loc.vz = aparz + aperMag*dz/d;
+        o.loc.vx = oparx - operMag*dx/d;
+        o.loc.vy = opary - operMag*dy/d;
+        o.loc.vz = oparz - operMag*dz/d; 
+        System.out.println(a.loc.vx + " " + a.loc.vy + " " + a.loc.vz);
+        System.out.println(o.loc.vx + " " + o.loc.vy + " " + o.loc.vz);
+      }
+    }
+  }*/
 }
 double[] arr(double a, double b, double c){
   double[] ret = {(double)a, (double)b, (double)c}; return ret;}

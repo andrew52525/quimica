@@ -6,9 +6,9 @@ public class Location{
     this.x = x;
     this.y = y;
     this.z = z;
-    vx = 1*(Math.random()-.5);
-    vy = 1*(Math.random()-.5);
-    vz = 1*(Math.random()-.5);
+    vx = 0*(Math.random()-.5);
+    vy = 0*(Math.random()-.5);
+    vz = 0*(Math.random()-.5);
   }
     
   public void update(){
@@ -16,5 +16,11 @@ public class Location{
   }
   public void applyForces(double[] f, double mass){
     vx+=(f[0]/mass);  vy+=(f[1]/mass);  vz+=(f[2]/mass);
+    double v = Math.sqrt(vx*vx + vy*vy + vz*vz);
+    if(v>7){
+      vx /= 1+((v-7)*.1);
+      vy /= 1+((v-7)*.1);
+      vz /= 1+((v-7)*.1);
+    }
   }
 }
