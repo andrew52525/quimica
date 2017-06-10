@@ -5,18 +5,19 @@ public class Atom{
   public double mass, radius, electronegativity;
   public int order; //just used to keep track of which atom is which, 1st atom is 1, etc.
   ArrayList<Atom> bonds;
-  public Atom[] closest20;
+  public Atom[] closest40;
 
   // default will be Hydrogen
   // I don't really know about common isotopes so you should adjust this
   public Atom(int orderi){
     order = orderi;
-    protons = 1;
-    neutrons = 1;
-    electrons = 1;
-    radius = 2+(Math.random()*6);
-    mass = (radius*radius*radius/125);     
-    updateCharge();
+    protons = (int)Math.random()*10;
+    neutrons = (int)Math.random()*10;
+    electrons = (int)Math.random()*10;
+    //radius = 2+(Math.random()*6);
+    radius = 5;
+    mass = protons+neutrons;   
+    charge = protons-electrons;
     bonds = new ArrayList<Atom>();
     loc = new Location(random(500),random(500),random(500));
   }
@@ -25,8 +26,6 @@ public class Atom{
     protons = proton;
     neutrons = neutron;
     electrons = electron;
-  
-    loc = new Location(0,0,0);
   }
     
   public void applyForces(double[] f){
@@ -36,7 +35,8 @@ public class Atom{
     loc.update(); //should be a variable velocity
     pushMatrix();
     translate((float)loc.x, (float)loc.y, (float)loc.z);
-    fill((int)(((charge*mass)+10)*12.7), 40, 255-(int)((charge*mass+10)*12.7));
+    fill((int)(((charge*mass/10)+10)*12.7), 40, 255-(int)((charge*mass/10+10)*12.7));
+    fill(0);
     noStroke();
     sphere((float)radius);
     popMatrix();
@@ -49,7 +49,7 @@ public class Atom{
     
   public void updateCharge(){
     charge = protons - electrons;
-    charge = 20*(Math.random()-.5)*mass;
+    //charge = 20*(Math.random()-.5)*mass; // 
   }
   public void addElectron(){
     electrons++;

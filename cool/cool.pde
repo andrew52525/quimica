@@ -27,14 +27,13 @@ void setup(){
 }
 
 void draw(){
-  //rect(60, 60, 60, 60);
   background(240);
   drawWalls();
   drawAtoms();
 }
 
 void mousePressed(){
-  for(int i = 0; i <10; i++){
+  for(int i = 0; i < 10; i++){
   Atom a = new Atom(numAtoms);
   atoms.add(a);
   numAtoms++;}
@@ -51,34 +50,34 @@ void drawAtoms(){
 double[] calcForces(Atom a){
   //positive is attraction, neg is repulsion
   double ftx = 0; double fty = 0; double ftz = 0; //total forces in each directio
-  a.closest20 = new Atom[20];
+  a.closest40 = new Atom[40];
   for(Atom o : atoms){
     double cool = manhattanDist(a, o);
-    int i = 19;
-    if(a.closest20[i]==null || cool>manhattanDist(a, a.closest20[i])){
-      while(a.closest20[i] = null || cool>manhattanDist(a, a.closest20[i])){
+    int i = 39;
+    if(a.closest40[i]==null || cool<manhattanDist(a, a.closest40[i])){
+      while(a.closest40[i]==null || cool<manhattanDist(a, a.closest40[i])){
         if(i==0){break;}
-        a.closest20[i] = a.closest20[i-1];
+        a.closest40[i] = a.closest40[i-1];
+        i--;
       }
-      a.closest20[i] = o;
+      a.closest40[i] = o;
     }
   }
-  for(Atom o : a.closest20){
-    if (o!=a){
+  for(Atom o : a.closest40){
+    if (o!=null && o!=a){
       double d = distance(a, o);
         double fo = 0; //force applied on atom a by an atom o
-        if(d < 10){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
-        fo -= 10*(a.charge*o.charge/(d*d)); //coulomb force
-        fo -= (a.mass*o.mass*10000)/(d*d*d) + (a.mass*o.mass*100000)/(d*d*d*d); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
-        if(a.bonds.contains(o)){fo += 10*o.mass*a.mass*(d-a.radius-o.radius-10);} //bond force
-        
+        if(d < 50){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
+        fo -= 20*(a.charge*o.charge/(d*d)); //coulomb force
+        fo -= (a.mass*o.mass*2000)/(d*d*d) + (a.mass*o.mass*10000)/(d*d*d*d); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
+        if(a.bonds.contains(o)){fo += .4*o.mass*a.mass*(d-a.radius-o.radius-10);} //bond force
         
         double xcomp = (o.loc.x-a.loc.x)/(d); //how much the vector going between a and o is pointing in the x direction
         double ycomp = (o.loc.y-a.loc.y)/(d); 
         double zcomp = (o.loc.z-a.loc.z)/(d); 
         ftx += xcomp*fo;
         fty += ycomp*fo;
-        ftz += zcomp*fo;      
+        ftz += zcomp*fo;  
     }
   }
 
