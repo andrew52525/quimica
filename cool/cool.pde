@@ -34,10 +34,10 @@ void draw(){
 }
 
 void mousePressed(){
-  //pushMatrix();
+  for(int i = 0; i <10; i++){
   Atom a = new Atom(numAtoms);
   atoms.add(a);
-  numAtoms++;
+  numAtoms++;}
   System.out.println(numAtoms);
 }
 
@@ -50,24 +50,35 @@ void drawAtoms(){
 
 double[] calcForces(Atom a){
   //positive is attraction, neg is repulsion
-  double ftx = 0; double fty = 0; double ftz = 0; //total forces in each direction
+  double ftx = 0; double fty = 0; double ftz = 0; //total forces in each directio
+  a.closest20 = new Atom[20];
   for(Atom o : atoms){
+    double cool = manhattanDist(a, o);
+    int i = 19;
+    if(a.closest20[i]==null || cool>manhattanDist(a, a.closest20[i])){
+      while(a.closest20[i] = null || cool>manhattanDist(a, a.closest20[i])){
+        if(i==0){break;}
+        a.closest20[i] = a.closest20[i-1];
+      }
+      a.closest20[i] = o;
+    }
+  }
+  for(Atom o : a.closest20){
     if (o!=a){
-      double fo = 0; //force applied on atom a by an atom o
       double d = distance(a, o);
-      //if(d < 10){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
-      fo -= 10*(a.charge*o.charge/(d*d)); //coulomb force
-      fo -= (a.mass*o.mass*10000)/(d*d*d) + (a.mass*o.mass*100000)/(d*d*d*d); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
-      //if(a.bonds.contains(o)){fo += 10;} //bond force
-      
-      
-      double xcomp = (o.loc.x-a.loc.x)/(d); //how much the vector going between a and o is pointing in the x direction
-      double ycomp = (o.loc.y-a.loc.y)/(d); 
-      double zcomp = (o.loc.z-a.loc.z)/(d); 
-      ftx += xcomp*fo;
-      fty += ycomp*fo;
-      ftz += zcomp*fo;      
-      
+        double fo = 0; //force applied on atom a by an atom o
+        if(d < 10){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
+        fo -= 10*(a.charge*o.charge/(d*d)); //coulomb force
+        fo -= (a.mass*o.mass*10000)/(d*d*d) + (a.mass*o.mass*100000)/(d*d*d*d); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
+        if(a.bonds.contains(o)){fo += 10*o.mass*a.mass*(d-a.radius-o.radius-10);} //bond force
+        
+        
+        double xcomp = (o.loc.x-a.loc.x)/(d); //how much the vector going between a and o is pointing in the x direction
+        double ycomp = (o.loc.y-a.loc.y)/(d); 
+        double zcomp = (o.loc.z-a.loc.z)/(d); 
+        ftx += xcomp*fo;
+        fty += ycomp*fo;
+        ftz += zcomp*fo;      
     }
   }
 
@@ -75,7 +86,7 @@ double[] calcForces(Atom a){
   return ret;
 }
 double distance(Atom a, Atom b){return Math.sqrt(((a.loc.x-b.loc.x)*(a.loc.x-b.loc.x)) + ((a.loc.y-b.loc.y)*(a.loc.y-b.loc.y)) + ((a.loc.z-b.loc.z)*(a.loc.z-b.loc.z)));}
-
+double manhattanDist(Atom a, Atom b){return Math.abs(a.loc.x-b.loc.x) + Math.abs(a.loc.y-b.loc.y) + Math.abs(a.loc.z-b.loc.z);}
 void bounce(Atom a){
   if (a.loc.x - a.radius < 0 && a.loc.vx < 0){a.loc.vx = -a.loc.vx;}
   if (a.loc.x + a.radius > h && a.loc.vx > 0){a.loc.vx = -a.loc.vx;}  
@@ -84,7 +95,7 @@ void bounce(Atom a){
   if (a.loc.z - a.radius < 0 && a.loc.vz < 0){a.loc.vz = -a.loc.vz;}  
   if (a.loc.z + a.radius > h && a.loc.vz > 0){a.loc.vz = -a.loc.vz;} 
   for(Atom o : atoms){    //bouncin against other ballz
-    if(o.order>a.order){
+    if(o.order>a.order && manhattanDist(a, o) < 30){
       double d = distance(a, o);
       if (d < a.radius + o.radius){
         System.out.println(a.loc.vx + " " + a.loc.vy + " " + a.loc.vz);

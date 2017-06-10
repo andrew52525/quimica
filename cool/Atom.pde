@@ -4,7 +4,8 @@ public class Atom{
   public Location loc; 
   public double mass, radius, electronegativity;
   public int order; //just used to keep track of which atom is which, 1st atom is 1, etc.
- // ArrayList<Atom> bonds;
+  ArrayList<Atom> bonds;
+  public Atom[] closest20;
 
   // default will be Hydrogen
   // I don't really know about common isotopes so you should adjust this
@@ -16,7 +17,7 @@ public class Atom{
     radius = 2+(Math.random()*6);
     mass = (radius*radius*radius/125);     
     updateCharge();
-//bonds = new ArrayList<Atom>();
+    bonds = new ArrayList<Atom>();
     loc = new Location(random(500),random(500),random(500));
   }
   public Atom(int orderi, int proton, int neutron, int electron){
@@ -61,7 +62,7 @@ public class Atom{
     return -1;
   }
   
-  /*public void bond(Atom o){
+  public void bond(Atom o){
     bonds.add(o);
-  }*/
+  }
 }
