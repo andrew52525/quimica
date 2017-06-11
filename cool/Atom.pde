@@ -38,8 +38,8 @@ public class Atom{
     fill((int)(((charge*mass)+10)*12.7), 40, 255-(int)((charge*mass+10)*12.7));
     noStroke();
     sphere((float)radius);
+    noFill();
     popMatrix();
-    //noFill();
   }
         
   public Location getLocation(){

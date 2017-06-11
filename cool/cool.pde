@@ -20,7 +20,7 @@ void setup(){
   size(500, 500, P3D);
   background(240);
   lights();
-  camera(width/2, height/2, (1.1*height) / tan(PI/6), width/2, height/2, 0, 0, 1, 0);
+  camera(height/2, height/2, (1.1*height) / tan(PI/6), height/2, height/2, 0, 0, 1, 0);
   h = height;
   drawWalls();
   atoms = new ArrayList<Atom>();
