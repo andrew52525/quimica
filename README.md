@@ -1,7 +1,11 @@
 <html>
   <strong>Spring 2017 APCS Final Project:</strong><br>
+<<<<<<< HEAD
   A particle simulation.<br>
   Something about chemistry.<br>
+=======
+  A chemistry simulation.<br>
+>>>>>>> andrew
   <br>
   <strong>Collaborators:</strong><br>
   Andrew Chen<br>
@@ -13,15 +17,30 @@
   Use the control bar drop-down menu to specific a certain element, and click the "add" button to add 5.<br>
   <br>
   <strong>List of Working Features:</strong><br>
+<<<<<<< HEAD
   Click to add atoms (of varying elements) directly in the simulation.<br>
   Control bar to select specific atoms to add (see List of Unresolved Bugs).<br>
   Balls can bounce off the walls in 3D!<br>
   Balls attract and repel each other based on their charge.<br>
   Particles can interact to form covalent bonds.<br>
+=======
+  Click to add atoms in the simulation.<br>
+  Atoms can bounce off walls and each other in 3D!<br>
+  Atoms attract and repel each other based on their charge.<br>
+  Atoms can ionize each other based off electronegativity.<br>
+  Covalent bonds between particles, including double and triple bonds. Some common molecules form.<br>
+>>>>>>> andrew
   Basic electron replusion (vsepr).<br>
+  Colors!!!!!!!<br>
   <br>
   <strong>List of Unresolved Bugs:</strong><br>
+<<<<<<< HEAD
   Finding the closest particles is difficult.<br>
   Drop-down menu for some reason is only adding Hydrogen and then some other green molecule.<br>
+=======
+  Starts slowing after adding ~100 atoms.<br>
+  Finding the closest particles is difficult.<br>
+  Everything moves quickly, making it hard for solids to form.<br>
+>>>>>>> andrew
 </html>
 

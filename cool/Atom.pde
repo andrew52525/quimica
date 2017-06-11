@@ -17,6 +17,7 @@ public class Atom {
   public Location loc; 
   public double mass, radius, electronegativity;
   public int order; //just used to keep track of which atom is which, 1st atom is 1, etc.
+  public ArrayList<Atom> bonds;
   public Atom[] closest40;
 
   public ArrayList<Bond> bonds;
