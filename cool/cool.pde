@@ -1,11 +1,11 @@
 /*
 i'm just putting some planning shit here cuz i'm too lazy to leave and it's easy to access
-
-things to do:
-fix wall setup
-too many calls to pushMatrix
-chemistry
-*/
+ 
+ things to do:
+ fix wall setup
+ too many calls to pushMatrix
+ chemistry
+ */
 
 import java.awt.Frame;
 
@@ -16,7 +16,7 @@ int h;//length of box
 int numAtoms;
 ArrayList<Atom> atoms;
 
-void setup(){
+void setup() {
   size(500, 500, P3D);
   colorMode(RGB, 100);  
   background(95);
@@ -25,7 +25,7 @@ void setup(){
   h = height;
   drawWalls();
   atoms = new ArrayList<Atom>();
-  
+
   JFrame frame =new JFrame("Controls");
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -38,81 +38,116 @@ void setup(){
   frame.setVisible(true);
 }
 
-int timer = 0;
-void draw(){
+void draw() {
   background(95);
   drawWalls();
-  drawAtoms();  
+  drawAtoms();
 }
 
-void mousePressed(){
-  for(int i = 0; i < 10; i++){
-  Atom a = new Atom(numAtoms);
-  atoms.add(a);
-  numAtoms++;}
+void mousePressed() {
+  for(int i = 0; i < 10; i++) {
+    Atom a = new Atom(numAtoms);
+    atoms.add(a);
+    numAtoms++;
+  }
   System.out.println(numAtoms);
 }
 
-void drawAtoms(){
-  for(Atom a: atoms){
-    a.applyForces(calcForces(a));
-    bounce(a);}
-  for(Atom a : atoms){a.move();} //moving has to come after updating velocity
+void addAtoms(int type){
+  for(int i = 0; i < 5; i++){
+    atoms.add(new Atom(numAtoms, type));
+    numAtoms++;
+  }
+  println(numAtoms);
 }
 
-double[] calcForces(Atom a){
+void drawAtoms() {
+  for (Atom a : atoms) {
+    a.applyForces(calcForces(a));
+    bounce(a);
+  }
+  for (Atom a : atoms) {
+    a.move();
+  } //moving has to come after updating velocity
+}
+
+double[] calcForces(Atom a) {
   //positive is attraction, neg is repulsion
-  double ftx = 0; double fty = 0; double ftz = 0; //total forces in each directio
+  double ftx = 0; 
+  double fty = 0; 
+  double ftz = 0; //total forces in each directio
   a.closest40 = new Atom[40];
-  for(Atom o : atoms){
+  for (Atom o : atoms) {
     double cool = manhattanDist(a, o);
     int i = 39;
-    if(a.closest40[i]==null || cool<manhattanDist(a, a.closest40[i])){
-      while(a.closest40[i]==null || cool<manhattanDist(a, a.closest40[i])){
-        if(i==0){break;}
+    if (a.closest40[i]==null || cool<manhattanDist(a, a.closest40[i])) {
+      while (a.closest40[i]==null || cool<manhattanDist(a, a.closest40[i])) {
+        if (i==0) {
+          break;
+        }
         a.closest40[i] = a.closest40[i-1];
         i--;
       }
       a.closest40[i] = o;
     }
   }
-  for(Atom o : a.closest40){
-    if (o!=null && o!=a){
+  for (Atom o : a.closest40) {
+    if (o!=null && o!=a) {
       double d = distance(a, o);
-        double fo = 0; //force applied on atom a by an atom o
-        double dr = d-a.radius-o.radius;
-        if(dr < 30){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
-        fo -= 80*(a.charge*o.charge/(d*d)); //coulomb force
-        fo -= (a.mass*o.mass*2000)/(dr*dr*dr*dr) + (a.mass*o.mass*100000)/(dr*dr*dr*dr*dr*dr*dr); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
-        if(a.bonds.contains(o)){
-          fo += .8*(d-a.radius-o.radius-10); //bond force
-          if(d > 30){a.breakBond(o);}
-        } 
-        
-        double xcomp = (o.loc.x-a.loc.x)/(d); //how much the vector going between a and o is pointing in the x direction
-        double ycomp = (o.loc.y-a.loc.y)/(d); 
-        double zcomp = (o.loc.z-a.loc.z)/(d); 
-        ftx += xcomp*fo;
-        fty += ycomp*fo;
-        ftz += zcomp*fo;  
+      double fo = 0; //force applied on atom a by an atom o
+      double dr = d-a.radius-o.radius;
+      if (dr < 30) {
+        a.bond(o);
+      }//make bonds (makes them go crazy rn, idk why)
+      fo -= 80*(a.charge*o.charge/(d*d)); //coulomb force
+      fo -= (a.mass*o.mass*2000)/(dr*dr*dr*dr) + (a.mass*o.mass*100000)/(dr*dr*dr*dr*dr*dr*dr); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
+      if (a.bonds.contains(o)) {
+        fo += .8*(d-a.radius-o.radius-10); //bond force
+        if (d > 30) {
+          a.breakBond(o);
+        }
+      } 
+
+      double xcomp = (o.loc.x-a.loc.x)/(d); //how much the vector going between a and o is pointing in the x direction
+      double ycomp = (o.loc.y-a.loc.y)/(d); 
+      double zcomp = (o.loc.z-a.loc.z)/(d); 
+      ftx += xcomp*fo;
+      fty += ycomp*fo;
+      ftz += zcomp*fo;
     }
   }
   double[] ret = {ftx, fty, ftz};
   return ret;
 }
-double distance(Atom a, Atom b){return Math.sqrt(((a.loc.x-b.loc.x)*(a.loc.x-b.loc.x)) + ((a.loc.y-b.loc.y)*(a.loc.y-b.loc.y)) + ((a.loc.z-b.loc.z)*(a.loc.z-b.loc.z)));}
-double manhattanDist(Atom a, Atom b){return Math.abs(a.loc.x-b.loc.x) + Math.abs(a.loc.y-b.loc.y) + Math.abs(a.loc.z-b.loc.z);}
-void bounce(Atom a){
-  if (a.loc.x - a.radius < 0 && a.loc.vx < 0){a.loc.vx = -a.loc.vx;}
-  if (a.loc.x + a.radius > h && a.loc.vx > 0){a.loc.vx = -a.loc.vx;}  
-  if (a.loc.y - a.radius < 0 && a.loc.vy < 0){a.loc.vy = -a.loc.vy;}  //bouncin against walls n shit
-  if (a.loc.y + a.radius > h && a.loc.vy > 0){a.loc.vy = -a.loc.vy;}  
-  if (a.loc.z - a.radius < 0 && a.loc.vz < 0){a.loc.vz = -a.loc.vz;}  
-  if (a.loc.z + a.radius > h && a.loc.vz > 0){a.loc.vz = -a.loc.vz;} 
-  for(Atom o : atoms){    //bouncin against other ballz
-    if(o.order>a.order && manhattanDist(a, o) < 30){
+double distance(Atom a, Atom b) {
+  return Math.sqrt(((a.loc.x-b.loc.x)*(a.loc.x-b.loc.x)) + ((a.loc.y-b.loc.y)*(a.loc.y-b.loc.y)) + ((a.loc.z-b.loc.z)*(a.loc.z-b.loc.z)));
+}
+double manhattanDist(Atom a, Atom b) {
+  return Math.abs(a.loc.x-b.loc.x) + Math.abs(a.loc.y-b.loc.y) + Math.abs(a.loc.z-b.loc.z);
+}
+void bounce(Atom a) {
+  if (a.loc.x - a.radius < 0 && a.loc.vx < 0) {
+    a.loc.vx = -a.loc.vx;
+  }
+  if (a.loc.x + a.radius > h && a.loc.vx > 0) {
+    a.loc.vx = -a.loc.vx;
+  }  
+  if (a.loc.y - a.radius < 0 && a.loc.vy < 0) {
+    a.loc.vy = -a.loc.vy;
+  }  //bouncin against walls n shit
+  if (a.loc.y + a.radius > h && a.loc.vy > 0) {
+    a.loc.vy = -a.loc.vy;
+  }  
+  if (a.loc.z - a.radius < 0 && a.loc.vz < 0) {
+    a.loc.vz = -a.loc.vz;
+  }  
+  if (a.loc.z + a.radius > h && a.loc.vz > 0) {
+    a.loc.vz = -a.loc.vz;
+  } 
+  for (Atom o : atoms) {    //bouncin against other ballz
+    if (o.order>a.order && manhattanDist(a, o) < 30) {
       double d = distance(a, o);
-      if (d < a.radius + o.radius){
+      if (d < a.radius + o.radius) {
         double dx = (o.loc.x-a.loc.x);  //displacement of o relative to a (a relative to o is negative!!)
         double dy = (o.loc.y-a.loc.y); 
         double dz = (o.loc.z-a.loc.z);                                                 
@@ -131,35 +166,43 @@ void bounce(Atom a){
         a.loc.vz = aparz + aperMag*dz/d;
         o.loc.vx = oparx - operMag*dx/d;
         o.loc.vy = opary - operMag*dy/d;
-        o.loc.vz = oparz - operMag*dz/d; 
+        o.loc.vz = oparz - operMag*dz/d;
       }
     }
   }
 }
-double[] arr(double a, double b, double c){
-  double[] ret = {(double)a, (double)b, (double)c}; return ret;
+double[] arr(double a, double b, double c) {
+  double[] ret = {(double)a, (double)b, (double)c}; 
+  return ret;
 }
-void drawWalls(){
-  new Wall('x', 0); new Wall('x', h);
-  new Wall('y', 0); new Wall('y', h);
-  new Wall('z', 0); new Wall('z', h);
+void drawWalls() {
+  new Wall('x', 0); 
+  new Wall('x', h);
+  new Wall('y', 0); 
+  new Wall('y', h);
+  new Wall('z', 0); 
+  new Wall('z', h);
 }
-public class Wall{
-  public Wall(char orient, int pos){
+public class Wall {
+  public Wall(char orient, int pos) {
     pushMatrix();
     rectMode(CENTER);
-    if(orient=='z'){
-       translate(0, 0, pos);
+    if (orient=='z') {
+      translate(0, 0, pos);
     }
-    if(orient=='y'){
+    if (orient=='y') {
       rotateX(radians(90));
       translate(0, 0, -pos);
     }
-    if(orient=='x'){
+    if (orient=='x') {
       rotateY(radians(-90));
       translate(0, 0, -pos);
     }
-    if(orient=='z'&&pos!=0){noFill();} else{fill(65);}
+    if (orient=='z'&&pos!=0) {
+      noFill();
+    } else {
+      fill(65);
+    }
     stroke(0);
     rect(h/2, h/2, h, h); //h is length
     popMatrix();

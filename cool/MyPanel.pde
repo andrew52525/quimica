@@ -8,10 +8,10 @@ import java.awt.event.*;
 import javax.swing.event.*;
 
 MyPanel controlPanel;
-
+int type = 0;
 color paper = color(0);
 
-public class MyPanel extends JPanel{
+public class MyPanel extends JPanel implements ActionListener{
   private JButton add;
   private JComboBox select;
   private JSlider temperature, concentration;
@@ -19,12 +19,14 @@ public class MyPanel extends JPanel{
   public MyPanel() {
     setPreferredSize(new Dimension(300, 200));
     add = new JButton("Add atom");
-    add.addActionListener(new AddClick());
-    
-    String[] s = {"Hydrogen", "Carbon", "Oxygen"};
+    add.addActionListener(this);
+    add.setActionCommand("add");
+
+    String[] s = {"Hydrogen", "Oxygen"};
     select = new JComboBox(s);
-    select.addActionListener(new Selection());
-    
+    select.addActionListener(this);
+    select.setActionCommand("select");
+
     //-Example: add a change listener to this slider:
     //jcomp6.addChangeListener(new HSlider3Change());
 
@@ -32,42 +34,43 @@ public class MyPanel extends JPanel{
     //setPreferredSize (new Dimension (412, 179));
     setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
-    
+
     c.gridx = 0;
     c.gridy = 0;
     add(select, c);
-    
+
     c.gridy = 1;
     add(add, c);
   }
-}
-
-class AddClick implements ActionListener{
-  void actionPerformed(ActionEvent e){
-    JButton b = (JButton)e.getSource();
-    b.setLabel("clicked");
-  }
-}
-
-class Selection implements ActionListener{
-  void actionPerformed(ActionEvent e){
+  
+  void actionPerformed(ActionEvent e) {
+    String event = e.getActionCommand();
+    if(event.equals("add")){
+      addAtoms(type);
+    }
+    
+    if(event.equals("select")){
+      String s = (String)select.getSelectedItem();
+      if(s.equals("Hydrogen")){
+        type = 0;
+      }else{
+        type = 1;
+      }
+    }
   }
 }
 /*
-//**************************************************************
-//  This gets called when button is clicked
-//**************************************************************
-
-class Button1Click implements ActionListener
-{
-  public void actionPerformed(ActionEvent e)
-  {
+class AddClick implements ActionListener {
+  void actionPerformed(ActionEvent e) {
     JButton b = (JButton)e.getSource();
-    b.setLabel("Thanks!");
-    timer=millis()+1000;
-
-    println("Click");
-    paper = color(random(255), random(255), random(255));
+    //b.setLabel("clicked");
+    for (int i = 0; i < 5; i++) {
+      atoms.add(new Atom(numAtoms));
+      numAtoms++;
+    }
   }
+}
+
+class Selection implements ActionListener {
 }
 */
