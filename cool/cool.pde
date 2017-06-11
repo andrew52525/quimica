@@ -41,18 +41,7 @@ int timer = 0;
 void draw(){
   background(240);
   drawWalls();
-  drawAtoms();
-  /*
-  if(timer!=0){
-    if(millis()>=timer){
-      controlPanel.jcomp1.setLabel("Again!");
-      timer=0;
-    }
-  }
-
-  background(paper);
-  ellipse(millis()/10%width, height/2-ballYPos, ballWidth, ballHeight);
-  */
+  drawAtoms();  
 }
 
 void mousePressed(){
