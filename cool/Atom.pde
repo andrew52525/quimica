@@ -5,6 +5,10 @@ public class Atom{
   public Location loc; 
   public double mass, radius, electronegativity;
   public int order; //just used to keep track of which atom is which, 1st atom is 1, etc.
+<<<<<<< HEAD
+=======
+  public ArrayList<Atom> bonds;
+>>>>>>> c1b5ce68313183d596e908ea99c890594f2b7790
   public Atom[] closest40;
   public ArrayList<Bond> bonds;
   public int[][] info = {{1, 1, 0, 100, 100, 100, 22}, //p, e, n, r, g, b, electroneg*10, //h white
