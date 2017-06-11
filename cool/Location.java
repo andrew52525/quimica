@@ -6,9 +6,9 @@ public class Location{
     this.x = x;
     this.y = y;
     this.z = z;
-    vx = 0*(Math.random()-.5);
-    vy = 0*(Math.random()-.5);
-    vz = 0*(Math.random()-.5);
+    vx = 1*(Math.random()-.5);
+    vy = 1*(Math.random()-.5);
+    vz = 1*(Math.random()-.5);
   }
     
   public void update(){
