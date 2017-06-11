@@ -15,17 +15,22 @@ int h;//length of box
 //the sides of the box are walls, the front of the box is a wall with no fill
 int numAtoms;
 ArrayList<Atom> atoms;
+ArrayList<Bond> bonds;
+float wallDamping; //value between 1 and 0, representing how much velocity particles retain after hitting a wall
 
 void setup() {
   size(500, 500, P3D);
   colorMode(RGB, 100);  
   background(95);
   lights();
+  textSize(32);
   camera(height/2, height/2, (1.1*height) / tan(PI/6), height/2, height/2, 0, 0, 1, 0);
   h = height;
+  wallDamping = .99;
   drawWalls();
   atoms = new ArrayList<Atom>();
-
+  bonds = new ArrayList<Bond>();
+  
   JFrame frame =new JFrame("Controls");
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -42,6 +47,7 @@ void draw() {
   background(95);
   drawWalls();
   drawAtoms();
+  mouseStuff();
 }
 
 void mousePressed() {
@@ -51,6 +57,16 @@ void mousePressed() {
     numAtoms++;
   }
   System.out.println(numAtoms);
+}
+void mouseStuff(){
+  double d = 100000; Atom closest = null;
+  for(Atom a : atoms){
+    if(distToMouse(a)<d){d = distToMouse(a); closest = a;}
+  }
+  if(closest!=null){
+    fill(100, 100, 100);
+    text(""+closest.charge, 10, 100);
+  }
 }
 
 void addAtoms(int type){
@@ -96,56 +112,53 @@ double[] calcForces(Atom a) {
       double d = distance(a, o);
       double fo = 0; //force applied on atom a by an atom o
       double dr = d-a.radius-o.radius;
-      if (dr < 30) {
-        a.bond(o);
-      }//make bonds (makes them go crazy rn, idk why)
-      fo -= 80*(a.charge*o.charge/(d*d)); //coulomb force
-      fo -= (a.mass*o.mass*2000)/(dr*dr*dr*dr) + (a.mass*o.mass*100000)/(dr*dr*dr*dr*dr*dr*dr); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
-      if (a.bonds.contains(o)) {
-        fo += .8*(d-a.radius-o.radius-10); //bond force
-        if (d > 30) {
-          a.breakBond(o);
+      boolean bonded = false;
+      Bond newb = new Bond(a, o);//dummy declaration to make code run
+      for(Bond bo : a.bonds){
+        if(bo.a==o||bo.b==o){bonded = true; newb = bo; break;}}
+      if(dr<30){
+        if(!bonded){
+          if(!a.full() && !o.full()){
+            newb = new Bond(a, o); 
+            a.bonds.add(newb); o.bonds.add(newb); bonds.add(newb);}//make bonds 
         }
-      } 
-
+      }
+        
+      if(bonded && dr>40){newb.kaboom(); bonds.remove(newb); bonded = false;} //break bond
+      if(bonded){if(random(1)>.99){newb.kaboom(); bonds.remove(newb); bonded = false;}}
+      if(bonded){newb.update(); fo+=newb.strength*(d - a.radius - o.radius - 10);} //bond false
+      
+      fo -= 40*(a.charge*o.charge/(d*d)); //coulomb force
+      fo -= (a.mass*o.mass*200)/(dr*dr*dr*dr) + (a.mass*o.mass*20000)/(dr*dr*dr*dr*dr*dr*dr); //repulsive force of being too close 
+      if(dr<30){a.ionize(o);}
+      
       double xcomp = (o.loc.x-a.loc.x)/(d); //how much the vector going between a and o is pointing in the x direction
       double ycomp = (o.loc.y-a.loc.y)/(d); 
       double zcomp = (o.loc.z-a.loc.z)/(d); 
       ftx += xcomp*fo;
       fty += ycomp*fo;
-      ftz += zcomp*fo;
+      ftz += zcomp*fo;  
+
     }
   }
+  fty+=.01*a.mass;//gravity
   double[] ret = {ftx, fty, ftz};
   return ret;
 }
-double distance(Atom a, Atom b) {
-  return Math.sqrt(((a.loc.x-b.loc.x)*(a.loc.x-b.loc.x)) + ((a.loc.y-b.loc.y)*(a.loc.y-b.loc.y)) + ((a.loc.z-b.loc.z)*(a.loc.z-b.loc.z)));
-}
-double manhattanDist(Atom a, Atom b) {
-  return Math.abs(a.loc.x-b.loc.x) + Math.abs(a.loc.y-b.loc.y) + Math.abs(a.loc.z-b.loc.z);
-}
-void bounce(Atom a) {
-  if (a.loc.x - a.radius < 0 && a.loc.vx < 0) {
-    a.loc.vx = -a.loc.vx;
-  }
-  if (a.loc.x + a.radius > h && a.loc.vx > 0) {
-    a.loc.vx = -a.loc.vx;
-  }  
-  if (a.loc.y - a.radius < 0 && a.loc.vy < 0) {
-    a.loc.vy = -a.loc.vy;
-  }  //bouncin against walls n shit
-  if (a.loc.y + a.radius > h && a.loc.vy > 0) {
-    a.loc.vy = -a.loc.vy;
-  }  
-  if (a.loc.z - a.radius < 0 && a.loc.vz < 0) {
-    a.loc.vz = -a.loc.vz;
-  }  
-  if (a.loc.z + a.radius > h && a.loc.vz > 0) {
-    a.loc.vz = -a.loc.vz;
-  } 
-  for (Atom o : atoms) {    //bouncin against other ballz
-    if (o.order>a.order && manhattanDist(a, o) < 30) {
+
+double distToMouse(Atom a){return Math.sqrt((a.loc.x-mouseX)*(a.loc.x-mouseX)+(a.loc.y-mouseY)*(a.loc.y-mouseY));}
+double distance(Atom a, Atom b){return Math.sqrt(((a.loc.x-b.loc.x)*(a.loc.x-b.loc.x)) + ((a.loc.y-b.loc.y)*(a.loc.y-b.loc.y)) + ((a.loc.z-b.loc.z)*(a.loc.z-b.loc.z)));}
+double manhattanDist(Atom a, Atom b){return Math.abs(a.loc.x-b.loc.x) + Math.abs(a.loc.y-b.loc.y) + Math.abs(a.loc.z-b.loc.z);}
+
+void bounce(Atom a){
+  if (a.loc.x - a.radius < 0 && a.loc.vx < 0){a.loc.vx = -a.loc.vx*wallDamping;}
+  if (a.loc.x + a.radius > h && a.loc.vx > 0){a.loc.vx = -a.loc.vx*wallDamping;}  
+  if (a.loc.y - a.radius < 0 && a.loc.vy < 0){a.loc.vy = -a.loc.vy*wallDamping;}  //bouncin against walls n shit
+  if (a.loc.y + a.radius > h && a.loc.vy > 0){a.loc.vy = -a.loc.vy*wallDamping;}  
+  if (a.loc.z - a.radius < 0 && a.loc.vz < 0){a.loc.vz = -a.loc.vz*wallDamping;}  
+  if (a.loc.z + a.radius > h && a.loc.vz > 0){a.loc.vz = -a.loc.vz*wallDamping;} 
+  for(Atom o : atoms){    //bouncin against other ballz
+    if(o.order>a.order && manhattanDist(a, o) < 30){
       double d = distance(a, o);
       if (d < a.radius + o.radius) {
         double dx = (o.loc.x-a.loc.x);  //displacement of o relative to a (a relative to o is negative!!)

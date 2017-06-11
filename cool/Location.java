@@ -21,10 +21,13 @@ public class Location{
   public void applyForces(double[] f, double mass){
     vx+=(f[0]/mass);  vy+=(f[1]/mass);  vz+=(f[2]/mass);
     double v = Math.sqrt(vx*vx + vy*vy + vz*vz);
-    if(v>7){
-      vx /= 1+((v-7)*.1);
+    if(v>5){
+      vx/=(1+((v-5)*.2));
+      vy/=(1+((v-5)*.2));
+      vz/=(1+((v-5)*.2));
+      /*vx /= 1+((v-7)*.1);
       vy /= 1+((v-7)*.1);
-      vz /= 1+((v-7)*.1);
+      vz /= 1+((v-7)*.1);*/
     }
   }
 }
