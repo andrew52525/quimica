@@ -18,7 +18,8 @@ ArrayList<Atom> atoms;
 
 void setup(){
   size(500, 500, P3D);
-  background(240);
+  colorMode(RGB, 100);  
+  background(95);
   lights();
   camera(height/2, height/2, (1.1*height) / tan(PI/6), height/2, height/2, 0, 0, 1, 0);
   h = height;
@@ -27,7 +28,7 @@ void setup(){
 }
 
 void draw(){
-  background(240);
+  background(95);
   drawWalls();
   drawAtoms();
 }
@@ -67,10 +68,14 @@ double[] calcForces(Atom a){
     if (o!=null && o!=a){
       double d = distance(a, o);
         double fo = 0; //force applied on atom a by an atom o
-        if(d < 20){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
-        fo -= 20*(a.charge*o.charge/(d*d)); //coulomb force
-        fo -= (a.mass*o.mass*2000)/(d*d*d) + (a.mass*o.mass*10000)/(d*d*d*d); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
-        if(a.bonds.contains(o)){fo += .4*o.mass*a.mass*(d-a.radius-o.radius-10);} //bond force
+        double dr = d-a.radius-o.radius;
+        if(dr < 30){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
+        fo -= 80*(a.charge*o.charge/(d*d)); //coulomb force
+        fo -= (a.mass*o.mass*2000)/(dr*dr*dr*dr) + (a.mass*o.mass*100000)/(dr*dr*dr*dr*dr*dr*dr); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
+        if(a.bonds.contains(o)){
+          fo += .8*(d-a.radius-o.radius-10); //bond force
+          if(d > 30){a.breakBond(o);}
+        } 
         
         double xcomp = (o.loc.x-a.loc.x)/(d); //how much the vector going between a and o is pointing in the x direction
         double ycomp = (o.loc.y-a.loc.y)/(d); 
@@ -96,8 +101,6 @@ void bounce(Atom a){
     if(o.order>a.order && manhattanDist(a, o) < 30){
       double d = distance(a, o);
       if (d < a.radius + o.radius){
-        System.out.println(a.loc.vx + " " + a.loc.vy + " " + a.loc.vz);
-        System.out.println(o.loc.vx + " " + o.loc.vy + " " + o.loc.vz);
         double dx = (o.loc.x-a.loc.x);  //displacement of o relative to a (a relative to o is negative!!)
         double dy = (o.loc.y-a.loc.y); 
         double dz = (o.loc.z-a.loc.z);                                                 
@@ -117,8 +120,6 @@ void bounce(Atom a){
         o.loc.vx = oparx - operMag*dx/d;
         o.loc.vy = opary - operMag*dy/d;
         o.loc.vz = oparz - operMag*dz/d; 
-        System.out.println(a.loc.vx + " " + a.loc.vy + " " + a.loc.vz);
-        System.out.println(o.loc.vx + " " + o.loc.vy + " " + o.loc.vz);
       }
     }
   }
@@ -146,7 +147,7 @@ public class Wall{
       rotateY(radians(-90));
       translate(0, 0, -pos);
     }
-    if(orient=='z'&&pos!=0){noFill();} else{fill(150);}
+    if(orient=='z'&&pos!=0){noFill();} else{fill(65);}
     stroke(0);
     rect(h/2, h/2, h, h); //h is length
     popMatrix();
