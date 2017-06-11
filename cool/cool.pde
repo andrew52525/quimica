@@ -12,7 +12,7 @@ chemistry
 int h;//length of box
 //the top left back corner of the box is (0, 0, 0).
 //the center of the box is (h/2, h/2, h/2).
-//the sides of the box are walls, the front of the box is a wall with no fill.
+//the sides of the box are walls, the front of the box is a wall with no fill
 int numAtoms;
 ArrayList<Atom> atoms;
 
@@ -67,7 +67,7 @@ double[] calcForces(Atom a){
     if (o!=null && o!=a){
       double d = distance(a, o);
         double fo = 0; //force applied on atom a by an atom o
-        if(d < 50){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
+        if(d < 20){a.bond(o);}//make bonds (makes them go crazy rn, idk why)
         fo -= 20*(a.charge*o.charge/(d*d)); //coulomb force
         fo -= (a.mass*o.mass*2000)/(d*d*d) + (a.mass*o.mass*10000)/(d*d*d*d); //repulsive force of being too close  //NOTE: make it depend on the distance INCLUDING the radii
         if(a.bonds.contains(o)){fo += .4*o.mass*a.mass*(d-a.radius-o.radius-10);} //bond force
@@ -80,7 +80,6 @@ double[] calcForces(Atom a){
         ftz += zcomp*fo;  
     }
   }
-
   double[] ret = {ftx, fty, ftz};
   return ret;
 }

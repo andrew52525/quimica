@@ -14,7 +14,7 @@ public class Atom{
     protons = (int)Math.random()*10;
     neutrons = (int)Math.random()*10;
     electrons = (int)Math.random()*10;
-    //radius = 2+(Math.random()*6);
+    if(protons==0&&neutrons==0){protons=1;}
     radius = 5;
     mass = protons+neutrons;   
     charge = protons-electrons;
@@ -32,14 +32,12 @@ public class Atom{
     loc.applyForces(f, mass);
   }
   public void move(){
-    loc.update(); //should be a variable velocity
+    loc.update(); 
     pushMatrix();
     translate((float)loc.x, (float)loc.y, (float)loc.z);
-    fill((int)(((charge*mass/10)+10)*12.7), 40, 255-(int)((charge*mass/10+10)*12.7));
-    fill(0);
+    fill((int)(((charge)+10)*12.7), 40, 255-(int)((charge+10)*12.7));
     noStroke();
     sphere((float)radius);
-    noFill();
     popMatrix();
   }
         
