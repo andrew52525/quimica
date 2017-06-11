@@ -7,7 +7,7 @@ too many calls to pushMatrix
 chemistry
 */
 
-
+import java.awt.Frame;
 
 int h;//length of box
 //the top left back corner of the box is (0, 0, 0).
@@ -24,12 +24,35 @@ void setup(){
   h = height;
   drawWalls();
   atoms = new ArrayList<Atom>();
+  
+  JFrame frame =new JFrame("Controls");
+  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+  controlPanel = new MyPanel();
+  controlPanel.setOpaque(true); //content panes must be opaque
+  frame.setContentPane(controlPanel);
+
+  //Display the window.
+  frame.pack();
+  frame.setVisible(true);
 }
 
+int timer = 0;
 void draw(){
   background(240);
   drawWalls();
   drawAtoms();
+  /*
+  if(timer!=0){
+    if(millis()>=timer){
+      controlPanel.jcomp1.setLabel("Again!");
+      timer=0;
+    }
+  }
+
+  background(paper);
+  ellipse(millis()/10%width, height/2-ballYPos, ballWidth, ballHeight);
+  */
 }
 
 void mousePressed(){
