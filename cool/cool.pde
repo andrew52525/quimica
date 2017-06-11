@@ -2,8 +2,6 @@
 i'm just putting some planning shit here cuz i'm too lazy to leave and it's easy to access
  
  things to do:
- fix wall setup
- too many calls to pushMatrix
  chemistry
  */
 
@@ -48,7 +46,7 @@ void draw() {
   background(95);
   drawWalls();
   if(added){
-    addAtoms(type);
+    addAtoms(element);
     added = false;
   }
   drawAtoms();
@@ -77,7 +75,7 @@ void mouseStuff(){
 
 void addAtoms(int type){
   for(int i = 0; i < 5; i++){
-    atoms.add(new Atom(numAtoms, type));
+    atoms.add(new Atom(numAtoms, element));
     numAtoms++;
   }
   println(numAtoms);
@@ -219,7 +217,7 @@ public class Wall {
     }
     if (orient=='z'&&pos!=0) {
       noFill();
-    } else {
+    }else {
       fill(65);
     }
     stroke(0);

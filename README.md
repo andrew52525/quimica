@@ -14,7 +14,7 @@
   <br>
   <strong>List of Working Features:</strong><br>
   Click to add atoms (of varying elements) directly in the simulation.<br>
-  Control bar to select specific atoms to add (currently only Hydrogen and Oxygen).<br>
+  Control bar to select specific atoms to add (see List of Unresolved Bugs).<br>
   Balls can bounce off the walls in 3D!<br>
   Balls attract and repel each other based on their charge.<br>
   Particles can interact to form covalent bonds.<br>
@@ -22,5 +22,6 @@
   <br>
   <strong>List of Unresolved Bugs:</strong><br>
   Finding the closest particles is difficult.<br>
+  Drop-down menu for some reason is only adding Hydrogen and then some other green molecule.<br>
 </html>
 
