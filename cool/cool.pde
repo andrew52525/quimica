@@ -17,6 +17,8 @@ int numAtoms;
 ArrayList<Atom> atoms;
 ArrayList<Bond> bonds;
 float wallDamping; //value between 1 and 0, representing how much velocity particles retain after hitting a wall
+boolean added, slower, faster;
+MyPanel controlPanel;
 
 void setup() {
   size(500, 500, P3D);
@@ -35,10 +37,9 @@ void setup() {
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
   controlPanel = new MyPanel();
-  controlPanel.setOpaque(true); //content panes must be opaque
+  controlPanel.setOpaque(true); 
   frame.setContentPane(controlPanel);
 
-  //Display the window.
   frame.pack();
   frame.setVisible(true);
 }
@@ -46,6 +47,10 @@ void setup() {
 void draw() {
   background(95);
   drawWalls();
+  if(added){
+    addAtoms(type);
+    added = false;
+  }
   drawAtoms();
   mouseStuff();
 }
@@ -58,6 +63,7 @@ void mousePressed() {
   }
   System.out.println(numAtoms);
 }
+
 void mouseStuff(){
   double d = 100000; Atom closest = null;
   for(Atom a : atoms){
