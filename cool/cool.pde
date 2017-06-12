@@ -96,7 +96,7 @@ void mouseStuff(){
   }
   if(closest!=null){
     fill(100, 100, 100);
-    text(""+closest.charge, 10, 100);
+    //text(""+closest.charge, 10, 100);
   }
 }
 
@@ -172,7 +172,7 @@ double[] calcForces(Atom a) {
 
     }
   }
-  fty+=.01*a.mass;//gravity
+  //fty+=.01*a.mass;//gravity
   double[] ret = {ftx, fty, ftz};
   return ret;
 }
