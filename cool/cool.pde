@@ -15,7 +15,7 @@ int numAtoms;
 ArrayList<Atom> atoms;
 ArrayList<Bond> bonds;
 float wallDamping; //value between 1 and 0, representing how much velocity particles retain after hitting a wall
-boolean added, slower, faster;
+boolean added, slower, faster, wloc;
 MyPanel controlPanel;
 int element, seconds, limit;
 
@@ -36,19 +36,26 @@ void setup() {
   seconds = 0;
   limit = 800;
   
-  JFrame frame =new JFrame("Controls");
-  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  JFrame f =new JFrame("Controls");
+  f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
   controlPanel = new MyPanel();
   controlPanel.setOpaque(true); 
-  frame.setContentPane(controlPanel);
+  f.setContentPane(controlPanel);
+  f.setLocation(displayWidth / 2 - width / 2 - 300, displayHeight / 2 - height / 2);
 
-  frame.pack();
-  frame.setVisible(true);
+  f.pack();
+  f.setVisible(true);
+  
+  wloc = true;
 }
 
 void draw() {
   background(95);
+  if(wloc){
+    frame.setLocation(displayWidth / 2, displayHeight / 2);
+    wloc = false;
+  }
   drawWalls();
   if(added){
     addAtoms(element);
