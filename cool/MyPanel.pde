@@ -3,15 +3,12 @@ import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 
-int element;
-
 public class MyPanel extends JPanel implements ActionListener{
   private JButton add, slow, fast;
   private JLabel temp;
   private JComboBox select;
 
   public MyPanel() {
-    element = 0;
     setPreferredSize(new Dimension(300, 200));
     add = new JButton("Add atom");
     add.addActionListener(this);
@@ -63,41 +60,54 @@ public class MyPanel extends JPanel implements ActionListener{
   
   void actionPerformed(ActionEvent e) {
     String event = e.getActionCommand();
-    if(event.equals("add")){
-      //addAtoms(type);
-      added = true;
-    }
     
     if(event.equals("select")){
       String s = (String)select.getSelectedItem();
       switch(s){
         case "Hydrogen":
           element = 0;
+          break;
         case "Helium":
           element = 1;
+          break;
         case "Lithium":
           element = 2;
+          break;
         case "Boron":
           element = 3;
+          break;
         case "Carbon":
           element = 4;
+          break;
         case "Nitrogen":
           element = 5;
+          break;
         case "Oxygen":
           element = 6;
+          break;
         case "Fluorine":
           element = 7;
+          break;
         case "Sodium":
           element = 8;
+          break;
         case "Magnesium":
           element = 9;
+          break;
         case "Phosphorous":
           element = 10;
+          break;
         case "Sulfur":
           element = 11;
+          break;
         case "Chlorine":
           element = 10;
+          break;
       }
+    }
+    
+    if(event.equals("add")){
+      added = true;
     }
     
     if(event.equals("slow")){

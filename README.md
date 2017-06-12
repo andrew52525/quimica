@@ -13,7 +13,7 @@
   <br>
   <strong>List of Working Features:</strong><br>
   Click to add atoms (of varying elements) directly in the simulation.<br>
-  Control bar to select specific atoms to add (see List of Unresolved Bugs).<br>
+  Control bar to select specific atoms to add.<br>
   Atoms can bounce off walls and each other in 3D!<br>
   Atoms attract and repel each other based on their charge.<br>
   Atoms can ionize each other based off electronegativity.<br>
@@ -23,8 +23,8 @@
   <br>
   <strong>List of Unresolved Bugs:</strong><br>
   Finding the closest particles is difficult.<br>
-  Drop-down menu for some reason is only adding Hydrogen and then some other green molecule.<br>
   Starts slowing after adding ~100 atoms.<br>
   Everything moves quickly, making it hard for solids to form.<br>
+  Still have no added an actionListener for the temperature.
 </html>
 

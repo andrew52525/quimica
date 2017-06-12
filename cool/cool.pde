@@ -17,6 +17,7 @@ ArrayList<Bond> bonds;
 float wallDamping; //value between 1 and 0, representing how much velocity particles retain after hitting a wall
 boolean added, slower, faster;
 MyPanel controlPanel;
+int element;
 
 void setup() {
   size(500, 500, P3D);
@@ -30,6 +31,8 @@ void setup() {
   drawWalls();
   atoms = new ArrayList<Atom>();
   bonds = new ArrayList<Bond>();
+  
+  element = 0;
   
   JFrame frame =new JFrame("Controls");
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
