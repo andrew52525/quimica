@@ -111,9 +111,13 @@ public class MyPanel extends JPanel implements ActionListener{
     }
     
     if(event.equals("slow")){
+      faster = false;
+      wallDamping = 0.5;
       slower = true;
     }
     if(event.equals("fast")){
+      slower = false;
+      wallDamping = 1.5;
       faster = true;
     }
   }
