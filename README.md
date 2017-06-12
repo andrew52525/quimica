@@ -13,8 +13,7 @@
   Click the simulation to clear it of all particles.<br>
   <br>
   <strong>List of Working Features:</strong><ul>
-  <li>Click to add atoms (of varying elements) directly in the simulation.</li>
-  <li>Control bar to select specific atoms to add and adjust temperature.</li>
+  <li>Separate window for control bar to select specific atoms to add and adjust temperature.</li>
   <li>Atoms can bounce off walls and each other in 3D!</li>
   <li>Atoms attract and repel each other based on their charge.</li>
   <li>Atoms can ionize each other based off electronegativity.</li>
@@ -23,7 +22,7 @@
   <li>Colors!!!!!!!</li></ul>
   <br>
   <strong>List of Unresolved Bugs:</strong><ul>
-  <li>Finding the closest particles is difficult.</li>
+  <li>Finding the closest particles to calculate forces is difficult.</li>
   <li>Starts slowing after adding ~100 atoms.</li>
   <li>Everything moves quickly, making it hard for solids to form.</li>
   <li>Changing the temperature only speeds up / slows down individual atoms, not molecules.</li>
