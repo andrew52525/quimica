@@ -34,7 +34,7 @@ void setup() {
   
   element = 0;
   seconds = 0;
-  limit = 500;
+  limit = 800;
   
   JFrame frame =new JFrame("Controls");
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
