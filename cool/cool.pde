@@ -54,12 +54,13 @@ void draw() {
 }
 
 void mousePressed() {
-  for(int i = 0; i < 10; i++) {
+  /*for(int i = 0; i < 10; i++) {
     Atom a = new Atom(numAtoms);
     atoms.add(a);
     numAtoms++;
   }
-  System.out.println(numAtoms);
+  System.out.println(numAtoms);*/
+  atoms = new ArrayList<Atom>();
 }
 
 void mouseStuff(){

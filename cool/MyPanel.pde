@@ -17,8 +17,8 @@ public class MyPanel extends JPanel implements ActionListener{
     add.addActionListener(this);
     add.setActionCommand("add");
 
-    String[] s = {"Hydrogen", "Helium", "Lithium", "Carbon", "Nitrogen", 
-                  "Oxygen", "Fluorine", "Sodium", "Phosphorous", "Sulfur", "Chlorine"};
+    String[] s = {"Hydrogen", "Helium", "Lithium", "Boron", "Carbon", "Nitrogen", 
+                  "Oxygen", "Fluorine", "Sodium", "Magnesium", "Phosphorous", "Sulfur", "Chlorine"};
     select = new JComboBox(s);
     select.addActionListener(this);
     select.setActionCommand("select");
@@ -77,20 +77,24 @@ public class MyPanel extends JPanel implements ActionListener{
           element = 1;
         case "Lithium":
           element = 2;
-        case "Carbon":
+        case "Boron":
           element = 3;
-        case "Nitrogen":
+        case "Carbon":
           element = 4;
-        case "Oxygen":
+        case "Nitrogen":
           element = 5;
-        case "Fluorine":
+        case "Oxygen":
           element = 6;
-        case "Sodium":
+        case "Fluorine":
           element = 7;
-        case "Phosphorous":
+        case "Sodium":
           element = 8;
-        case "Sulfur":
+        case "Magnesium":
           element = 9;
+        case "Phosphorous":
+          element = 10;
+        case "Sulfur":
+          element = 11;
         case "Chlorine":
           element = 10;
       }

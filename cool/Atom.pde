@@ -1,14 +1,16 @@
 int[][] info = {{1, 1, 0, 100, 100, 100, 22}, //p, e, n, r, g, b, electroneg*10, //h white
                 {2, 2, 2, 80, 80, 100, 1000}, //he light blue
                 {3, 3, 3, 60, 60, 60, 10}, //li light grey
+                {5, 5, 5, 45, 20, 13, 21},
                 {6, 6, 6, 10, 10, 10, 25}, //c black
                 {7, 7, 7, 10, 10, 100, 31}, //n blue
                 {8, 8, 8, 95, 20, 10, 35}, //o red
-                {9, 9, 10, 10, 80, 10, 42}, //f light green
+                {9, 9, 10, 10, 100, 10, 42}, //f light green
                 {11, 11, 12, 50, 50, 50, 10}, //na grey
+                {12, 12, 12, 40, 40, 40, 14},
                 {15, 15, 16, 60, 10, 60, 21}, //p purple
                 {16, 16, 16, 95, 95, 0, 24}, //s yellow
-                {17, 17, 19, 5, 60, 5, 28}      //cl dark green
+                {17, 17, 19, 5, 7, 5, 28}      //cl dark green
                };
 public class Atom {
   private int p, e, n; 
@@ -17,7 +19,6 @@ public class Atom {
   public Location loc; 
   public double mass, radius, electronegativity;
   public int order; //just used to keep track of which atom is which, 1st atom is 1, etc.
-  public ArrayList<Atom> bonds;
   public Atom[] closest40;
 
   public ArrayList<Bond> bonds;
