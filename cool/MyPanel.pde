@@ -5,11 +5,11 @@ import javax.swing.event.*;
 
 public class MyPanel extends JPanel implements ActionListener{
   private JButton add, slow, fast;
-  private JLabel temp;
+  private JLabel ecolors, temp;
   private JComboBox select;
 
   public MyPanel() {
-    setPreferredSize(new Dimension(300, 200));
+    setPreferredSize(new Dimension(300, 450));
     add = new JButton("Add atom");
     add.addActionListener(this);
     add.setActionCommand("add");
@@ -21,6 +21,8 @@ public class MyPanel extends JPanel implements ActionListener{
     select.setActionCommand("select");
     
     temp = new JLabel("TEMPERATURE: ");
+    
+    ecolors = new JLabel("<html><strong>Colors:</strong><br>Hydrogen - white<br>Helium - light blue<br>Lithium - light grey<br>Boron - brown<br>Carbon - black<br>Nitrogen - blue<br>Oxygen - red<br>Fluorine - light green<br>Sodium - grey<br>Magnesium - dark grey<br>Phosphorous - purple<br>Sulfur - yellow<br>Chlorine - dark green</html>");
     
     slow = new JButton("Decrease");
     slow.addActionListener(this);
@@ -43,18 +45,24 @@ public class MyPanel extends JPanel implements ActionListener{
     // add atoms 
     c.gridx = 1;
     add(add, c);
+    // colors
+    c.gridx = 0;
+    c.gridy = 1;
+    c.gridwidth = 2;
+    add(ecolors, c);
     
     c.insets = new Insets(10, 10, 0, 10);
+    c.gridwidth = 1;
     // TEMPERATURE
     // label
     c.gridx = 0;
-    c.gridy = 1;
+    c.gridy = 2;
     add(temp, c);
     // faster
     c.gridx = 1;
     add(fast, c);
     //slower
-    c.gridy = 2;
+    c.gridy = 3;
     add(slow, c);
   }
   

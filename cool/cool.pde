@@ -42,7 +42,7 @@ void setup() {
   controlPanel = new MyPanel();
   controlPanel.setOpaque(true); 
   f.setContentPane(controlPanel);
-  f.setLocation(displayWidth / 2 - width / 2 - 300, displayHeight / 2 - height / 2);
+  f.setLocation(displayWidth / 2 - width / 2 - 300, displayHeight / 2 - 275);
 
   f.pack();
   f.setVisible(true);
